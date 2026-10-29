@@ -1,7 +1,7 @@
 {
   "name": "opencode-token-speed-counter",
   "version": "0.1.0",
-  "description": "Live token speed pill for OpenCode Desktop 2.2.1",
+  "description": "Live tokens/sec counter for OpenCode Desktop with real-time estimates and final output and reasoning metrics.",
   "type": "module",
   "private": true,
   "engines": { "node": ">=24" },

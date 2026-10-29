@@ -1,19 +1,19 @@
-# Token Speed Counter pour OpenCode Desktop
+# Token Speed Counter for OpenCode Desktop
 
-Compteur de tokens par seconde pour **OpenCode Desktop 2.2.1**, ciblé sur **macOS**. Une pastille au-dessus du champ de saisie affiche la vitesse de la dernière requête du modèle :
+A live tokens-per-second counter for **OpenCode Desktop 2.2.1**, targeting **macOS**. A pill above the composer shows the speed of the latest model request:
 
-- Pendant la génération : `≈ 42,3 tok/s · Génération`.
-- À la fin : `38,7 tok/s · terminé`.
-- Au clic : sortie, raisonnement, total, durée, modèle et origine de la mesure.
+- During generation: `≈ 42.3 tok/s · Generating`.
+- After completion: `38.7 tok/s · done`.
+- Click the pill for output tokens, reasoning tokens, total tokens, duration, model, and measurement source.
 
-L’interface suit la langue et les composants natifs d’OpenCode, en français ou en anglais et dans les thèmes clair et sombre. Aucun appel supplémentaire aux modèles, aucune clé API supplémentaire, aucun historique ni envoi de télémétrie n’est ajouté par l’extension. Elle lit les données déjà synchronisées par Desktop.
+The interface follows OpenCode’s language and native components, with English and French localization and support for light and dark themes. The extension makes no additional model requests, requires no additional API keys, and adds no history or telemetry. It reads data already synchronized by Desktop.
 
-## Installation sur macOS
+## Installation on macOS
 
-### 1. Prérequis
+### 1. Prerequisites
 
-- OpenCode **Desktop 2.2.1** (vérifier dans « À propos »). L’API graphique est expérimentale : les autres versions ne sont pas annoncées compatibles.
-- Node.js **24 LTS** et npm, ainsi que Git. Vérifier dans Terminal :
+- OpenCode **Desktop 2.2.1** (check the About dialog). The GUI API is experimental; other versions are not claimed to be compatible.
+- Node.js **24 LTS**, npm, and Git. Check them in Terminal:
 
 ```bash
 node --version
@@ -21,11 +21,11 @@ npm --version
 git --version
 ```
 
-Cette V1 s’installe depuis un dossier local compilé. Aucune publication npm ni modification de l’application Desktop n’est nécessaire. Conserver ce dossier à son emplacement après activation.
+Version 1 installs from a locally compiled directory. No npm publication or Desktop application changes are required. Keep this directory in place after activation.
 
-### 2. Télécharger et compiler
+### 2. Download and build
 
-Depuis le dossier permanent de votre choix :
+From a permanent location of your choice:
 
 ```bash
 git clone https://github.com/Kxrbx/opencode-token-speed-counter.git
@@ -34,67 +34,67 @@ npm ci
 npm run build
 ```
 
-Ne pas recloner si le dossier existe déjà : utiliser les instructions de mise à jour plus bas. Le dépôt distant doit contenir cette implémentation pour que le clonage permette de l’installer.
+If the directory already exists, follow the update instructions below instead of cloning again.
 
-La compilation doit produire au minimum :
+The build must produce at least:
 
 ```text
 dist/server.js
 dist/gui-experimental.cjs
 ```
 
-Afficher le chemin absolu à utiliser dans la configuration :
+Print the absolute path to use in your configuration:
 
 ```bash
 pwd -P
 ```
 
-Ne pas utiliser un chemin de l’environnement cloud (`/workspace/...`) sur votre Mac.
+Do not use a cloud workspace path such as `/workspace/...` on your Mac.
 
-### 3. Activer globalement — recommandé
+### 3. Enable globally — recommended
 
-Quitter complètement OpenCode Desktop (`⌘Q`). Dans la configuration utilisateur OpenCode, ajouter le chemin absolu du **dossier du paquet**, pas celui de son fichier JavaScript, à la liste `plugins`.
+Quit OpenCode Desktop completely (`⌘Q`). In your OpenCode user configuration, add the absolute path to the **package directory**, rather than a JavaScript file, to the `plugins` array.
 
-L’emplacement standard est `~/.config/opencode/opencode.jsonc` (ou le fichier `opencode.json` existant). Si `XDG_CONFIG_HOME` est personnalisé, utiliser son sous-dossier `opencode`. Utiliser le fichier déjà présent plutôt que créer une deuxième configuration concurrente.
+The standard location is `~/.config/opencode/opencode.jsonc` (or your existing `opencode.json`). If you customized `XDG_CONFIG_HOME`, use its `opencode` subdirectory. Edit the existing file rather than creating a second, competing configuration.
 
-**Avant toute modification, sauvegarder le fichier existant.** Par exemple, uniquement si vous utilisez ce fichier :
+**Back up the existing file before editing it.** For example, only if you use this file:
 
 ```bash
 cp -p ~/.config/opencode/opencode.jsonc ~/.config/opencode/opencode.jsonc.backup-$(date +%Y%m%d-%H%M%S)
 ```
 
-Exemple minimal à **fusionner** avec votre configuration, en remplaçant le chemin par le résultat de `pwd -P` :
+**Merge** this minimal example into your configuration, replacing the path with the output of `pwd -P`:
 
 ```jsonc
 {
   "$schema": "https://opencode.ai/config.json",
   "plugins": [
-    "/Users/VOTRE_NOM/Extensions/opencode-token-speed-counter"
+    "/Users/YOUR_NAME/Extensions/opencode-token-speed-counter"
   ]
 }
 ```
 
-Conserver les autres plugins et tous les autres réglages. Si la liste `plugins` existe, ajouter une seule entrée, séparée par une virgule. Si ce chemin est déjà présent, ne rien ajouter. En 2.2.1, le champ est bien **`plugins` au pluriel**. Utiliser un chemin absolu, sans `~` ni variable shell à l’intérieur du JSON.
+Preserve all other plugins and settings. If `plugins` already exists, add a single entry, separated by a comma. If this path is already listed, add nothing. In 2.2.1, the field is **`plugins`, plural**. Use an absolute path without `~` or shell variables inside the JSON.
 
-### Variante : activation pour un seul projet
+### Alternative: enable for one project
 
-Ajouter la même entrée à `plugins` dans le `opencode.jsonc` du projet (ou son `opencode.json` existant), après sauvegarde, puis ouvrir ce projet dans Desktop. Choisir cette variante **ou** l’installation globale pour éviter une double déclaration. Un chemin personnel absolu ne doit pas être partagé comme configuration commune du projet.
+After backing up the project’s `opencode.jsonc` (or existing `opencode.json`), add the same entry to its `plugins` array, then open that project in Desktop. Choose this method **or** the global installation to avoid duplicate declarations. Do not share a personal absolute path as common project configuration.
 
-### 4. Vérifier dans Desktop
+### 4. Verify in Desktop
 
-1. Relancer OpenCode Desktop et ouvrir un projet et une conversation principale.
-2. Vérifier que `token-speed-counter` est actif dans **Extensions → Plugins**. Si nécessaire, ouvrir un projet avec la configuration concernée puis redémarrer Desktop.
-3. Envoyer une demande générant une réponse de quelques secondes.
-4. Vérifier l’affichage de la pastille près de la saisie, puis cliquer dessus pour ouvrir les détails.
-5. À la fin, vérifier le bilan : il utilise les compteurs du fournisseur si disponibles ; sinon il conserve le symbole `≈`.
+1. Restart OpenCode Desktop and open a project and a main conversation.
+2. Verify that `token-speed-counter` is active under **Extensions → Plugins**. If needed, open a project using the relevant configuration and restart Desktop.
+3. Send a prompt that generates a response lasting a few seconds.
+4. Check the pill near the composer, then click it to open the details.
+5. At completion, check the final result: it uses provider counters when available; otherwise, it keeps the `≈` symbol.
 
-Les pastilles de ce point d’extension ne sont pas affichées par OpenCode dans les conversations de sous-agents. La V1 cible les conversations principales.
+OpenCode does not show pills from this extension point in subagent conversations. Version 1 targets main conversations.
 
-L’extension ne modifie jamais votre configuration automatiquement. Répéter les instructions d’activation consiste à vérifier l’entrée existante, sans l’ajouter une seconde fois.
+The extension never edits your configuration automatically. Repeating activation means checking the existing entry, not adding it again.
 
-## Mise à jour
+## Updating
 
-Quitter Desktop, puis dans le dossier de l’extension :
+Quit Desktop, then run these commands in the extension directory:
 
 ```bash
 git pull --ff-only
@@ -102,84 +102,84 @@ npm ci
 npm run build
 ```
 
-Relancer Desktop. Le chemin configuré reste le même : ne pas ajouter une nouvelle entrée. Si Git signale des modifications locales ou des branches divergentes, les préserver et résoudre la situation avant de poursuivre ; ne pas réinitialiser le dépôt aveuglément. Vérifier les notes de compatibilité avant de mettre à jour OpenCode lui-même.
+Restart Desktop. The configured path stays the same; do not add another entry. If Git reports local changes or diverging branches, preserve them and resolve the issue before continuing; do not blindly reset the repository. Check compatibility notes before updating OpenCode itself.
 
-## Désactivation et désinstallation
+## Disabling and uninstalling
 
-Pour suspendre l’affichage, désactiver la partie graphique dans **Extensions → Plugins**. L’entrée serveur du compteur n’ajoute aucun hook de génération.
+To hide the counter temporarily, disable its GUI component under **Extensions → Plugins**. The counter’s server entry adds no generation hooks.
 
-Pour désinstaller complètement :
+To uninstall completely:
 
-1. Quitter Desktop.
-2. Retirer uniquement le chemin de cette extension de `plugins`, dans la configuration choisie à l’installation. Conserver les autres entrées et régler les virgules si nécessaire.
-3. Relancer Desktop et vérifier que la pastille a disparu et que vos autres plugins fonctionnent.
-4. Supprimer éventuellement le dossier local de l’extension.
+1. Quit Desktop.
+2. Remove only this extension’s path from `plugins` in the configuration you chose during installation. Keep the other entries and adjust commas if needed.
+3. Restart Desktop and verify that the pill is gone and your other plugins still work.
+4. Optionally delete the local extension directory.
 
-Aucune clé, donnée de fournisseur ou conversation n’est supprimée. L’extension ne crée pas de données persistantes à nettoyer. Si l’entrée est déjà absente, aucune modification de configuration n’est nécessaire.
+No keys, provider data, or conversations are deleted. The extension creates no persistent data to clean up. If the entry is already absent, no configuration change is needed.
 
-## Comprendre les chiffres
+## Understanding the numbers
 
-### Moyenne finale
+### Final average
 
 ```text
 (tokens.output + tokens.reasoning) / ((time.streamed - time.created) / 1000)
 ```
 
-OpenCode 2.2.1 fournit ces catégories de tokens séparément. Le temps inclut l’attente avant le premier token et s’arrête à la fin du flux fournisseur, **avant le règlement des outils**. Il mesure donc le débit de la requête, pas uniquement la cadence après le premier token. Les tokens d’entrée et de cache ne sont pas ajoutés.
+OpenCode 2.2.1 provides these token categories separately. The duration includes the wait before the first token and ends when the provider stream finishes, **before tool settlement**. It therefore measures request throughput, rather than only the generation speed after the first token. Input and cache tokens are not included.
 
-Une nouvelle requête après un appel d’outil commence une nouvelle mesure ; le compteur n’additionne pas les requêtes d’un tour ni les sous-agents. Pendant un outil, le bilan de la requête précédente reste figé. Les bilans sont reconstitués depuis les messages synchronisés après redémarrage, sans historique propre à l’extension.
+A new request after a tool call starts a new measurement. The counter does not combine requests within a turn or include subagents. While a tool runs, the previous request’s result stays frozen. Results are reconstructed from synchronized messages after a restart, without the extension maintaining its own history.
 
-### Pendant la génération
+### During generation
 
-L’estimation prend le nombre de caractères Unicode du texte et du raisonnement reçus, le divise par **4**, puis par la durée écoulée depuis la création de la requête. Rafraîchissement toutes les **250 ms**, uniquement pendant une requête active de la conversation affichée.
+The estimate counts Unicode characters in the received text and reasoning, divides by **4**, then divides by the time elapsed since the request was created. It refreshes every **250 ms**, only during an active request in the displayed conversation.
 
-Le symbole **`≈` reste obligatoire pour une estimation**. Ce n’est pas un tokenizer propre au modèle : la précision varie avec la langue, le code et le modèle. Le raisonnement caché et les arguments d’outils ne sont pas estimables à partir du texte visible. Le bilan peut donc changer sensiblement lorsque les compteurs réels arrivent.
+Estimates **always keep the `≈` symbol**. This is not a model-specific tokenizer: accuracy varies by language, code, and model. Hidden reasoning and tool arguments cannot be estimated from displayed text. The final result may therefore change substantially when actual counters arrive.
 
-Si un endpoint local ou un fournisseur ne communique pas de compteurs, la moyenne finale reste estimée. Une durée manquante, nulle ou incohérente affiche « Indisponible » plutôt qu’un débit trompeur. Une requête interrompue sans horodatage de fin de flux ne reçoit pas de moyenne finale inventée. Une déconnexion suspend le débit en cours ; une reconnexion utilise de nouveau les données du serveur.
+If a local endpoint or provider does not report counters, the final average remains estimated. A missing, zero, or inconsistent duration displays “Unavailable” instead of a misleading rate. An interrupted request without a stream-end timestamp receives no invented final average. A disconnection suspends the live rate; reconnection resumes using the server’s data.
 
-## Dépannage
+## Troubleshooting
 
-| Symptôme | Vérification |
+| Symptom | What to check |
 | --- | --- |
-| Aucune pastille | Ouvrir une conversation principale ; vérifier le projet, `plugins`, le chemin absolu du dossier, puis l’activation graphique et redémarrer Desktop. |
-| Erreur de chargement | Vérifier `dist/server.js` et `dist/gui-experimental.cjs` ; relancer `npm ci` puis `npm run build`. Ne pas déplacer le dossier après activation. |
-| « Indisponible » après mise à jour | Cible validée au niveau de l’API : 2.2.1 uniquement. Le menu de la pastille signale une version différente. |
-| Le symbole `≈` reste à la fin | Les compteurs finaux sont absents ou invalides. C’est attendu pour certains endpoints ; ne pas saisir de nouvelle clé pour le compteur. |
-| Raisonnement sous-estimé en direct | Le fournisseur peut masquer son raisonnement ; seule sa comptabilité finale peut le fournir. |
-| « Déconnecté » | Rétablir la connexion d’OpenCode à son serveur ; le compteur réutilise cette connexion. |
-| Pas de bilan après interruption | L’horodatage de fin du flux peut manquer ; le temps des outils ou le temps depuis l’arrêt ne sert jamais de remplacement. |
-| Installation déclarée deux fois | Garder une seule entrée, globale ou par projet, sans toucher aux autres plugins. |
+| No pill | Open a main conversation; check the project, `plugins`, the absolute directory path, and GUI activation, then restart Desktop. |
+| Loading error | Check `dist/server.js` and `dist/gui-experimental.cjs`; rerun `npm ci` and `npm run build`. Do not move the directory after activation. |
+| “Unavailable” after an update | API compatibility targets 2.2.1 only. The pill’s menu reports a different version. |
+| `≈` remains after completion | Final counters are missing or invalid. This is expected for some endpoints; no additional key is needed for the counter. |
+| Reasoning is underestimated live | The provider may hide reasoning; only its final accounting can report it. |
+| “Disconnected” | Restore OpenCode’s connection to its server; the counter reuses that connection. |
+| No final average after interruption | The stream-end timestamp may be missing. Tool execution time or time since interruption is never used as a substitute. |
+| Duplicate installation entry | Keep one entry, globally or per project, without changing other plugins. |
 
-## Développement et validation
+## Development and validation
 
 ```bash
 npm ci
 npm run check
 ```
 
-`check` exécute les types, les tests de calcul et de réactivité, la compilation et un test du paquet extrait dans un dossier temporaire. Ce dernier charge les exports du paquet avec le SDK hôte et simule une pastille passant de la génération au bilan, puis son nettoyage. Les modules OpenCode/Solid sont fournis par l’hôte et ne sont pas embarqués dans le bundle graphique.
+`check` runs type checking, calculation and reactivity tests, the build, and a test of the package extracted into a temporary directory. The package test loads its exports using the host SDK, simulates a pill moving from generation to the final result, and verifies cleanup. OpenCode and Solid modules are supplied by the host and are not bundled into the GUI artifact.
 
-Les tests couvrent notamment les doublons de snapshots, l’isolation des serveurs et sessions, les durées invalides, les outils, l’interruption, la reconnexion, les libellés et la suppression des temporisateurs. Ces simulations **ne constituent pas un essai dans Desktop macOS**.
+Tests cover duplicate snapshots, server and session isolation, invalid durations, tools, interruption, reconnection, labels, and timer cleanup. These simulations **are not a test inside macOS Desktop**.
 
-### Recette manuelle macOS 2.2.1 — à exécuter
+### Manual acceptance checklist for macOS 2.2.1 — pending
 
-Pour chacun de **OpenCode Zen/Go**, **OpenRouter** et votre **endpoint local personnalisé**, en utilisant vos connexions existantes :
+For each of **OpenCode Zen/Go**, **OpenRouter**, and your **custom local endpoint**, using your existing connections:
 
-- [ ] Installer/activer depuis le dossier compilé ; vérifier le chargement graphique.
-- [ ] Générer une réponse avec raisonnement si le modèle le permet ; vérifier l’estimation et le menu de détails.
-- [ ] Vérifier les compteurs finaux ou le maintien explicite de `≈` lorsque l’endpoint n’en fournit pas.
-- [ ] Faire exécuter un outil lent ; vérifier que sa durée ne fait pas baisser la moyenne figée.
-- [ ] Interrompre une réponse, changer d’onglet, couper/rétablir la connexion.
-- [ ] Quitter puis relancer Desktop ; vérifier le bilan reconstitué et les thèmes clair/sombre.
-- [ ] Refaire l’activation sans ajouter de doublon ; vérifier la configuration des autres plugins.
-- [ ] Désinstaller puis réinstaller ; vérifier que les autres réglages restent intacts.
+- [ ] Install and activate from the compiled directory; verify GUI loading.
+- [ ] Generate a response with reasoning if supported; check the live estimate and detail menu.
+- [ ] Check final counters, or the explicit retention of `≈` when the endpoint does not provide them.
+- [ ] Run a slow tool; verify that its execution time does not reduce the frozen average.
+- [ ] Interrupt a response, switch tabs, and disconnect/reconnect.
+- [ ] Quit and restart Desktop; check the reconstructed result and light/dark themes.
+- [ ] Repeat activation without adding a duplicate; check other plugins’ configuration.
+- [ ] Uninstall and reinstall; verify that other settings remain intact.
 
-La compilation et les tests peuvent être exécutés dans un cloud Linux. La recette ci-dessus nécessite le Mac de l’utilisateur et ses fournisseurs configurés ; ne pas la considérer comme exécutée sur la seule base des tests automatisés.
+The build and tests can run in a Linux cloud environment. The checklist above requires the user’s Mac and configured providers; automated tests alone do not establish that it has been completed.
 
-## Références et limites
+## References and limitations
 
-- [API graphique 2.2.1 : ComposerPill](https://github.com/anomalyco/opencode/blob/v2.2.1/packages/plugin/src/gui/registries.ts)
-- [Compilation graphique officielle](https://github.com/anomalyco/opencode/blob/v2.2.1/packages/plugin/src/gui/vite.ts)
-- [Exemple officiel d’installation locale via plugins](https://github.com/anomalyco/opencode/blob/v2.2.1/packages/plugins/figma/README.md)
+- [GUI API 2.2.1: ComposerPill](https://github.com/anomalyco/opencode/blob/v2.2.1/packages/plugin/src/gui/registries.ts)
+- [Official GUI build helper](https://github.com/anomalyco/opencode/blob/v2.2.1/packages/plugin/src/gui/vite.ts)
+- [Official local installation example using plugins](https://github.com/anomalyco/opencode/blob/v2.2.1/packages/plugins/figma/README.md)
 
-Pas de coûts, statistiques globales, graphiques, historique supplémentaire ou publication automatique dans cette V1. La présence de l’API dans 2.2.1 et la compilation contre son SDK ne garantissent pas la compatibilité avec une version future.
+Version 1 includes no costs, global statistics, charts, additional history, or automatic publication. The API’s presence in 2.2.1 and successful compilation against its SDK do not guarantee compatibility with future versions.

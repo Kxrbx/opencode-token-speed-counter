@@ -65,7 +65,7 @@ try {
     }
     let registration
     plugin.setup({
-      app: { version: "2.2.1" }, sessions: { current: () => session }, locale: { locale: () => "fr-FR" },
+      app: { version: "2.2.1" }, sessions: { current: () => session }, locale: { locale: () => "en-US" },
       add(registry, contribution) {
         assert.equal(registry, sdk.ComposerPill)
         assert.equal(registration, undefined)
@@ -83,7 +83,7 @@ try {
     time: { created: 1000, streamed: 3000, completed: 9000 },
     tokens: { output: 80, reasoning: 20 }, content: [],
   }])
-  assert.equal(instance.pill().show({ session: instance.session }).label, "50 tok/s · terminé")
+  assert.equal(instance.pill().show({ session: instance.session }).label, "50 tok/s · done")
   assert.equal(timers.size, 0)
   instance.dispose()
   assert.equal(instance.pill(), undefined)
