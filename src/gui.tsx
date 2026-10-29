@@ -3,9 +3,31 @@ import { createCounter } from "./controller.js"
 import { measure, type Snapshot } from "./measurement.js"
 import { present } from "./presentation.js"
 
+function parseVersion(version: string | undefined): number[] {
+  const text = String(version ?? "").trim().replace(/^v/i, "")
+  const core = text.split(/[+-]/)[0]
+  const parts = core.split(".").map((part) => {
+    const parsed = Number.parseInt(part, 10)
+    return Number.isFinite(parsed) ? parsed : 0
+  })
+  while (parts.length < 3) parts.push(0)
+  return parts.slice(0, 3)
+}
+
+function isCompatibleVersion(version: string | undefined): boolean {
+  // OpenCode's GUI API is experimental, but the addon must keep working on
+  // current and future releases. Only versions older than 2.2.1 are disabled.
+  const current = parseVersion(version)
+  const minimum = parseVersion("2.2.1")
+  for (let index = 0; index < 3; index += 1) {
+    if (current[index] !== minimum[index]) return current[index] > minimum[index]
+  }
+  return true
+}
+
 export default Plugin.define({
   setup(ctx) {
-    const compatible = ctx.app.version === "2.2.1"
+    const compatible = isCompatibleVersion(ctx.app?.version)
     const snapshot = (): Snapshot | undefined => {
       const session = ctx.sessions.current()
       if (!session) return

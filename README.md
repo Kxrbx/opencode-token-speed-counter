@@ -1,6 +1,6 @@
 # Token Speed Counter for OpenCode Desktop
 
-A live tokens-per-second counter for **OpenCode Desktop 2.2.1**, targeting **macOS**. A pill above the composer shows the speed of the latest model request:
+A live tokens-per-second counter for **OpenCode Desktop 2.2.1 and later**, targeting **macOS**. A pill above the composer shows the speed of the latest model request:
 
 - During generation: `≈ 42.3 tok/s · Generating`.
 - After completion: `38.7 tok/s · done`.
@@ -10,7 +10,7 @@ The interface follows OpenCode’s language and native components, with English 
 
 ## Quick installation on macOS
 
-Requires **OpenCode Desktop 2.2.1**, **Node.js 24+**, npm, and Git. Quit Desktop, then paste this command into Terminal:
+Requires **OpenCode Desktop 2.2.1 or later**, **Node.js 24+**, npm, and Git. Quit Desktop, then paste this command into Terminal:
 
 ```bash
 curl -fsSL https://raw.githubusercontent.com/Kxrbx/opencode-token-speed-counter/main/install.sh | bash
@@ -34,7 +34,7 @@ Custom locations are supported through `TOKEN_SPEED_INSTALL_DIR`, `XDG_DATA_HOME
 
 ### 1. Prerequisites
 
-- OpenCode **Desktop 2.2.1** (check the About dialog). The GUI API is experimental; other versions are not claimed to be compatible.
+- OpenCode **Desktop 2.2.1 or later** (check the About dialog). The GUI API is experimental; versions older than 2.2.1 are not supported.
 - Node.js **24 LTS**, npm, and Git. Check them in Terminal:
 
 ```bash
@@ -174,7 +174,7 @@ If a local endpoint or provider does not report counters, the final average rema
 | --- | --- |
 | No pill | Open a main conversation; check the project, `plugins`, the absolute directory path, and GUI activation, then restart Desktop. |
 | Loading error | Check `dist/server.js` and `dist/gui-experimental.cjs`; rerun `npm ci` and `npm run build`. Do not move the directory after activation. |
-| “Unavailable” after an update | API compatibility targets 2.2.1 only. The pill’s menu reports a different version. |
+| “Unavailable” after an update | The installed OpenCode version is older than 2.2.1. The pill’s menu reports the detected version. |
 | `≈` remains after completion | Final counters are missing or invalid. This is expected for some endpoints; no additional key is needed for the counter. |
 | Reasoning is underestimated live | The provider may hide reasoning; only its final accounting can report it. |
 | “Disconnected” | Restore OpenCode’s connection to its server; the counter reuses that connection. |

@@ -7,7 +7,7 @@ const en = {
   model: "Model", precision: "Measurement", reported: "Provider counters", estimated: "Estimate: 4 Unicode characters/token",
   timing: "Includes first-token wait; excludes tool execution",
   caveat: "Hidden reasoning and tool arguments cannot be estimated from displayed text.",
-  compatibility: "Requires OpenCode Desktop 2.2.1",
+  compatibility: "Requires OpenCode Desktop 2.2.1 or later",
 }
 const fr: typeof en = {
   title: "Vitesse des tokens", waiting: "En attente", streaming: "Génération", tools: "Outil en cours",
@@ -16,7 +16,7 @@ const fr: typeof en = {
   model: "Modèle", precision: "Mesure", reported: "Compteurs du fournisseur", estimated: "Estimation : 4 caractères Unicode/token",
   timing: "Inclut l’attente du premier token ; exclut les outils",
   caveat: "Le raisonnement masqué et les arguments d’outils ne peuvent pas être estimés à partir du texte affiché.",
-  compatibility: "Nécessite OpenCode Desktop 2.2.1",
+  compatibility: "Nécessite OpenCode Desktop 2.2.1 ou ultérieur",
 }
 
 export function present(value: Measurement, locale: string, compatible = true) {

@@ -1,4 +1,4 @@
-/** Structural projection of OpenCode 2.2.1's synced messages. Never retains prompt text. */
+/** Structural projection of OpenCode's synced messages (2.2.1 and later). Never retains prompt text. */
 export interface Message {
   id: string
   type: string
