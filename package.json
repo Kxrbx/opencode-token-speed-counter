@@ -4,23 +4,31 @@
   "description": "Live tokens/sec counter for OpenCode Desktop with real-time estimates and final output and reasoning metrics.",
   "type": "module",
   "private": true,
-  "engines": { "node": ">=24" },
+  "engines": {
+    "node": ">=24"
+  },
   "exports": {
     ".": "./dist/server.js",
     "./server": "./dist/server.js",
     "./gui-experimental": "./dist/gui-experimental.cjs"
   },
-  "files": ["dist", "README.md"],
+  "files": [
+    "dist",
+    "README.md"
+  ],
   "scripts": {
+    "install:local": "node scripts/configure.mjs install",
+    "uninstall:local": "node scripts/configure.mjs uninstall",
     "build": "tsc -p tsconfig.build.json && vite build",
     "typecheck": "tsc --noEmit",
-    "test": "tsx --conditions=browser --test test/*.test.ts",
+    "test": "tsx --conditions=browser --test test/*.test.ts test/*.test.mjs",
     "check": "npm run typecheck && npm test && npm run build && npm run test:package",
     "test:package": "node --conditions=browser scripts/check-package.mjs"
   },
   "devDependencies": {
     "@opencode/plugin": "2.2.1",
     "@types/node": "24.12.2",
+    "jsonc-parser": "3.3.1",
     "solid-js": "1.9.17",
     "tsx": "4.20.6",
     "typescript": "5.9.3",

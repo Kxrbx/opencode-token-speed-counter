@@ -8,7 +8,29 @@ A live tokens-per-second counter for **OpenCode Desktop 2.2.1**, targeting **mac
 
 The interface follows OpenCode’s language and native components, with English and French localization and support for light and dark themes. The extension makes no additional model requests, requires no additional API keys, and adds no history or telemetry. It reads data already synchronized by Desktop.
 
-## Installation on macOS
+## Quick installation on macOS
+
+Requires **OpenCode Desktop 2.2.1**, **Node.js 24+**, npm, and Git. Quit Desktop, then paste this command into Terminal:
+
+```bash
+curl -fsSL https://raw.githubusercontent.com/Kxrbx/opencode-token-speed-counter/main/install.sh | bash
+```
+
+The installer downloads the extension to `~/.local/share/opencode-token-speed-counter`, installs dependencies, builds it, and adds its absolute directory path to your global OpenCode `plugins` array. **Restart Desktop** and open a main conversation to see the pill.
+
+The installer makes this configuration change explicitly on your behalf. It preserves JSONC comments, other plugins and settings, and creates a timestamped backup before changing an existing file. Running it again updates the checkout and does not add another entry. It uses no `sudo` and does not install system prerequisites automatically.
+
+If you already cloned and built this repository, simply run this from its directory:
+
+```bash
+npm run install:local
+```
+
+To inspect the installer before running it, open [`install.sh`](install.sh) and [`scripts/configure.mjs`](scripts/configure.mjs). For help from an existing checkout, run `bash install.sh --help`.
+
+Custom locations are supported through `TOKEN_SPEED_INSTALL_DIR`, `XDG_DATA_HOME`, and `XDG_CONFIG_HOME`. The installer stops instead of overwriting an unrelated directory or a checkout with local changes. If both `opencode.json` and `opencode.jsonc` exist, or you use `OPENCODE_CONFIG`, `OPENCODE_CONFIG_DIR`, or `OPENCODE_CONFIG_CONTENT`, use the manual method below to select the intended configuration. Only the global configuration is changed; remove any existing project-level declaration of this extension to avoid duplicates across configuration files.
+
+## Manual installation on macOS
 
 ### 1. Prerequisites
 
@@ -90,11 +112,11 @@ After backing up the project’s `opencode.jsonc` (or existing `opencode.json`),
 
 OpenCode does not show pills from this extension point in subagent conversations. Version 1 targets main conversations.
 
-The extension never edits your configuration automatically. Repeating activation means checking the existing entry, not adding it again.
+The extension does not edit configuration while running. Only the explicit installer or `npm run install:local` changes the configuration. With manual activation, check the existing entry instead of adding it again.
 
 ## Updating
 
-Quit Desktop, then run these commands in the extension directory:
+For a quick installation, quit Desktop and rerun the one-command installer above. For a manual installation, run these commands in the extension directory:
 
 ```bash
 git pull --ff-only
@@ -108,14 +130,23 @@ Restart Desktop. The configured path stays the same; do not add another entry. I
 
 To hide the counter temporarily, disable its GUI component under **Extensions → Plugins**. The counter’s server entry adds no generation hooks.
 
-To uninstall completely:
+If you used the quick installer, quit Desktop and remove its configuration entry with:
+
+```bash
+cd "$HOME/.local/share/opencode-token-speed-counter"
+npm run uninstall:local
+```
+
+Use your chosen directory instead if you customized the installation path. This command backs up the existing configuration and removes only entries matching this extension directory. It preserves other settings and can be repeated safely. Restart Desktop afterward. You may then delete the extension directory if desired.
+
+To uninstall manually:
 
 1. Quit Desktop.
 2. Remove only this extension’s path from `plugins` in the configuration you chose during installation. Keep the other entries and adjust commas if needed.
 3. Restart Desktop and verify that the pill is gone and your other plugins still work.
 4. Optionally delete the local extension directory.
 
-No keys, provider data, or conversations are deleted. The extension creates no persistent data to clean up. If the entry is already absent, no configuration change is needed.
+No keys, provider data, or conversations are deleted. The running extension creates no persistent measurement data to clean up. Installer backups remain beside your configuration file; keep or delete them as appropriate. If the entry is already absent, no configuration change is needed.
 
 ## Understanding the numbers
 
@@ -159,13 +190,13 @@ npm run check
 
 `check` runs type checking, calculation and reactivity tests, the build, and a test of the package extracted into a temporary directory. The package test loads its exports using the host SDK, simulates a pill moving from generation to the final result, and verifies cleanup. OpenCode and Solid modules are supplied by the host and are not bundled into the GUI artifact.
 
-Tests cover duplicate snapshots, server and session isolation, invalid durations, tools, interruption, reconnection, labels, and timer cleanup. These simulations **are not a test inside macOS Desktop**.
+Installer tests also verify fresh activation, repeated activation/removal, exact backups, JSONC comment preservation, symlinked configuration, and rejection of invalid or ambiguous files. Tests cover duplicate snapshots, server and session isolation, invalid durations, tools, interruption, reconnection, labels, and timer cleanup. These simulations **are not a test inside macOS Desktop**.
 
 ### Manual acceptance checklist for macOS 2.2.1 — pending
 
 For each of **OpenCode Zen/Go**, **OpenRouter**, and your **custom local endpoint**, using your existing connections:
 
-- [ ] Install and activate from the compiled directory; verify GUI loading.
+- [ ] Install using the quick installer or activate from the compiled directory; verify GUI loading.
 - [ ] Generate a response with reasoning if supported; check the live estimate and detail menu.
 - [ ] Check final counters, or the explicit retention of `≈` when the endpoint does not provide them.
 - [ ] Run a slow tool; verify that its execution time does not reduce the frozen average.
