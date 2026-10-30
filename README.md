@@ -75,19 +75,19 @@ pwd -P
 
 Do not use a cloud workspace path such as `/workspace/...` on your Mac.
 
-### 3. Enable globally — recommended
+### 3. Enable globally (recommended)
 
 Quit OpenCode Desktop completely (`⌘Q`). In your OpenCode user configuration, add the absolute path to the **package directory**, rather than a JavaScript file, to the `plugins` array.
 
 The standard location is `~/.config/opencode/opencode.jsonc` (or your existing `opencode.json`). If you customized `XDG_CONFIG_HOME`, use its `opencode` subdirectory. Edit the existing file rather than creating a second, competing configuration.
 
-**Back up the existing file before editing it.** For example, only if you use this file:
+Back up the existing file before editing it. For example, only if you use this file:
 
 ```bash
 cp -p ~/.config/opencode/opencode.jsonc ~/.config/opencode/opencode.jsonc.backup-$(date +%Y%m%d-%H%M%S)
 ```
 
-**Merge** this minimal example into your configuration, replacing the path with the output of `pwd -P`:
+Merge this minimal example into your configuration, replacing the path with the output of `pwd -P`:
 
 ```jsonc
 {
@@ -168,7 +168,7 @@ The estimate counts Unicode characters in the received text and reasoning, divid
 
 Estimates **always keep the `≈` symbol**. This is not a model-specific tokenizer: accuracy varies by language, code, and model. Hidden reasoning and tool arguments cannot be estimated from displayed text. The final result may therefore change substantially when actual counters arrive.
 
-If a local endpoint or provider does not report counters, the final average remains estimated. A missing, zero, or inconsistent duration displays “Unavailable” instead of a misleading rate. An interrupted request without a stream-end timestamp receives no invented final average. A disconnection suspends the live rate; reconnection resumes using the server’s data.
+If a local endpoint or provider does not report counters, the final average remains estimated. A missing, zero, or inconsistent duration displays `Unavailable` instead of a misleading rate. An interrupted request without a stream-end timestamp receives no invented final average. A disconnection suspends the live rate; reconnection resumes using the server’s data.
 
 ## Troubleshooting
 
@@ -176,10 +176,10 @@ If a local endpoint or provider does not report counters, the final average rema
 | --- | --- |
 | No pill | Open a main conversation; check the project, `plugins`, the absolute directory path, and GUI activation, then restart Desktop. |
 | Loading error | Check `dist/server.js` and `dist/gui-experimental.cjs`; rerun `npm ci` and `npm run build`. Do not move the directory after activation. |
-| “Unavailable” after an update | The installed OpenCode version is older than 2.2.1. The pill’s menu reports the detected version. |
+| `Unavailable` after an update | The installed OpenCode version is older than 2.2.1. The pill’s menu reports the detected version. |
 | `≈` remains after completion | Final counters are missing or invalid. This is expected for some endpoints; no additional key is needed for the counter. |
 | Reasoning is underestimated live | The provider may hide reasoning; only its final accounting can report it. |
-| “Disconnected” | Restore OpenCode’s connection to its server; the counter reuses that connection. |
+| `Disconnected` | Restore OpenCode’s connection to its server; the counter reuses that connection. |
 | No final average after interruption | The stream-end timestamp may be missing. Tool execution time or time since interruption is never used as a substitute. |
 | Duplicate installation entry | Keep one entry, globally or per project, without changing other plugins. |
 
@@ -192,9 +192,9 @@ npm run check
 
 `check` runs type checking, calculation and reactivity tests, the build, and a test of the package extracted into a temporary directory. The package test loads its exports using the host SDK, simulates a pill moving from generation to the final result, and verifies cleanup. OpenCode and Solid modules are supplied by the host and are not bundled into the GUI artifact.
 
-Installer tests also verify fresh activation, repeated activation/removal, exact backups, JSONC comment preservation, symlinked configuration, and rejection of invalid or ambiguous files. Tests cover duplicate snapshots, server and session isolation, invalid durations, tools, interruption, reconnection, labels, and timer cleanup. These simulations **are not a test inside macOS Desktop**.
+Installer tests also verify fresh activation, repeated activation/removal, exact backups, JSONC comment preservation, symlinked configuration, and rejection of invalid or ambiguous files. Tests cover duplicate snapshots, server and session isolation, invalid durations, tools, interruption, reconnection, labels, and timer cleanup. These simulations are not a test inside macOS Desktop.
 
-### Manual acceptance checklist for macOS 2.2.1 — pending
+### Manual acceptance checklist for macOS 2.2.1 (pending)
 
 For each of **OpenCode Zen/Go**, **OpenRouter**, and your **custom local endpoint**, using your existing connections:
 
@@ -207,7 +207,7 @@ For each of **OpenCode Zen/Go**, **OpenRouter**, and your **custom local endpoin
 - [ ] Repeat activation without adding a duplicate; check other plugins’ configuration.
 - [ ] Uninstall and reinstall; verify that other settings remain intact.
 
-The build and tests can run in a Linux cloud environment. The checklist above requires the user’s Mac and configured providers; automated tests alone do not establish that it has been completed.
+The build and tests can run in a Linux cloud environment. The checklist above requires your Mac and configured providers; automated tests alone do not establish that it has been completed.
 
 ## References and limitations
 
