@@ -18,11 +18,11 @@ Requires **OpenCode Desktop 2.2.1 or later**, **Node.js 24+**, npm, and Git. Qui
 curl -fsSL https://raw.githubusercontent.com/Kxrbx/opencode-token-speed-counter/main/install.sh | bash
 ```
 
-The installer downloads the extension to `~/.local/share/opencode-token-speed-counter`, installs dependencies, builds it, and adds its absolute directory path to your global OpenCode `plugins` array. **Restart Desktop** and open a main conversation to see the pill.
+The installer downloads the extension to `~/.local/share/opencode-token-speed-counter`, installs dependencies, builds it, and adds its absolute directory path to the global OpenCode `plugins` array. **Restart Desktop** and open a main conversation to see the pill.
 
-The installer makes this configuration change explicitly on your behalf. It preserves JSONC comments, other plugins and settings, and creates a timestamped backup before changing an existing file. Running it again updates the checkout and does not add another entry. It uses no `sudo` and does not install system prerequisites automatically.
+The installer makes this configuration change explicitly. It preserves JSONC comments, other plugins and settings, and creates a timestamped backup before changing an existing file. Running it again updates the checkout and does not add another entry. It uses no `sudo` and does not install system prerequisites automatically.
 
-If you already cloned and built this repository, simply run this from its directory:
+If the repository was already cloned and built, run this from its directory:
 
 ```bash
 npm run install:local
@@ -30,7 +30,7 @@ npm run install:local
 
 To inspect the installer before running it, open [`install.sh`](install.sh) and [`scripts/configure.mjs`](scripts/configure.mjs). For help from an existing checkout, run `bash install.sh --help`.
 
-Custom locations are supported through `TOKEN_SPEED_INSTALL_DIR`, `XDG_DATA_HOME`, and `XDG_CONFIG_HOME`. The installer stops instead of overwriting an unrelated directory or a checkout with local changes. If both `opencode.json` and `opencode.jsonc` exist, or you use `OPENCODE_CONFIG`, `OPENCODE_CONFIG_DIR`, or `OPENCODE_CONFIG_CONTENT`, use the manual method below to select the intended configuration. Only the global configuration is changed; remove any existing project-level declaration of this extension to avoid duplicates across configuration files.
+Custom locations are supported through `TOKEN_SPEED_INSTALL_DIR`, `XDG_DATA_HOME`, and `XDG_CONFIG_HOME`. The installer stops instead of overwriting an unrelated directory or a checkout with local changes. If both `opencode.json` and `opencode.jsonc` exist, or `OPENCODE_CONFIG`, `OPENCODE_CONFIG_DIR`, or `OPENCODE_CONFIG_CONTENT` is used, use the manual method below to select the intended configuration. Only the global configuration is changed; remove any existing project-level declaration of this extension to avoid duplicates across configuration files.
 
 ## Manual installation on macOS
 
@@ -49,7 +49,7 @@ Version 1 installs from a locally compiled directory. No npm publication or Desk
 
 ### 2. Download and build
 
-From a permanent location of your choice:
+From a permanent location of choice:
 
 ```bash
 git clone https://github.com/Kxrbx/opencode-token-speed-counter.git
@@ -67,27 +67,27 @@ dist/server.js
 dist/gui-experimental.cjs
 ```
 
-Print the absolute path to use in your configuration:
+Print the absolute path to use in the configuration:
 
 ```bash
 pwd -P
 ```
 
-Do not use a cloud workspace path such as `/workspace/...` on your Mac.
+Do not use a cloud workspace path such as `/workspace/...` on a Mac.
 
 ### 3. Enable globally (recommended)
 
-Quit OpenCode Desktop completely (`⌘Q`). In your OpenCode user configuration, add the absolute path to the **package directory**, rather than a JavaScript file, to the `plugins` array.
+Quit OpenCode Desktop completely (`⌘Q`). In the OpenCode user configuration, add the absolute path to the **package directory**, rather than a JavaScript file, to the `plugins` array.
 
-The standard location is `~/.config/opencode/opencode.jsonc` (or your existing `opencode.json`). If you customized `XDG_CONFIG_HOME`, use its `opencode` subdirectory. Edit the existing file rather than creating a second, competing configuration.
+The standard location is `~/.config/opencode/opencode.jsonc` (or an existing `opencode.json`). If `XDG_CONFIG_HOME` was customized, use its `opencode` subdirectory. Edit the existing file rather than creating a second, competing configuration.
 
-Back up the existing file before editing it. For example, only if you use this file:
+Back up the existing file before editing it. For example, only if this file is used:
 
 ```bash
 cp -p ~/.config/opencode/opencode.jsonc ~/.config/opencode/opencode.jsonc.backup-$(date +%Y%m%d-%H%M%S)
 ```
 
-Merge this minimal example into your configuration, replacing the path with the output of `pwd -P`:
+Merge this minimal example into the configuration, replacing the path with the output of `pwd -P`:
 
 ```jsonc
 {
@@ -132,23 +132,23 @@ Restart Desktop. The configured path stays the same; do not add another entry. I
 
 To hide the counter temporarily, disable its GUI component under **Extensions → Plugins**. The counter’s server entry adds no generation hooks.
 
-If you used the quick installer, quit Desktop and remove its configuration entry with:
+If the quick installer was used, quit Desktop and remove its configuration entry with:
 
 ```bash
 cd "$HOME/.local/share/opencode-token-speed-counter"
 npm run uninstall:local
 ```
 
-Use your chosen directory instead if you customized the installation path. This command backs up the existing configuration and removes only entries matching this extension directory. It preserves other settings and can be repeated safely. Restart Desktop afterward. You may then delete the extension directory if desired.
+Use a chosen directory instead if the installation path was customized. This command backs up the existing configuration and removes only entries matching this extension directory. It preserves other settings and can be repeated safely. Restart Desktop afterward. The directory may then be deleted if desired.
 
 To uninstall manually:
 
 1. Quit Desktop.
-2. Remove only this extension’s path from `plugins` in the configuration you chose during installation. Keep the other entries and adjust commas if needed.
-3. Restart Desktop and verify that the pill is gone and your other plugins still work.
+2. Remove only this extension’s path from `plugins` in the configuration chosen during installation. Keep the other entries and adjust commas if needed.
+3. Restart Desktop and verify that the pill is gone and other plugins still work.
 4. Optionally delete the local extension directory.
 
-No keys, provider data, or conversations are deleted. The running extension creates no persistent measurement data to clean up. Installer backups remain beside your configuration file; keep or delete them as appropriate. If the entry is already absent, no configuration change is needed.
+No keys, provider data, or conversations are deleted. The running extension creates no persistent measurement data to clean up. Installer backups remain beside the configuration file; keep or delete them as appropriate. If the entry is already absent, no configuration change is needed.
 
 ## Understanding the numbers
 
@@ -196,7 +196,7 @@ Installer tests also verify fresh activation, repeated activation/removal, exact
 
 ### Manual acceptance checklist for macOS 2.2.1 (pending)
 
-For each of **OpenCode Zen/Go**, **OpenRouter**, and your **custom local endpoint**, using your existing connections:
+For each of **OpenCode Zen/Go**, **OpenRouter**, and a **custom local endpoint**, using existing connections:
 
 - [ ] Install using the quick installer or activate from the compiled directory; verify GUI loading.
 - [ ] Generate a response with reasoning if supported; check the live estimate and detail menu.
@@ -207,7 +207,7 @@ For each of **OpenCode Zen/Go**, **OpenRouter**, and your **custom local endpoin
 - [ ] Repeat activation without adding a duplicate; check other plugins’ configuration.
 - [ ] Uninstall and reinstall; verify that other settings remain intact.
 
-The build and tests can run in a Linux cloud environment. The checklist above requires your Mac and configured providers; automated tests alone do not establish that it has been completed.
+The build and tests can run in a Linux cloud environment. The checklist above requires the Mac and configured providers; automated tests alone do not establish that it has been completed.
 
 ## References and limitations
 
