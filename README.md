@@ -183,32 +183,6 @@ If a local endpoint or provider does not report counters, the final average rema
 | No final average after interruption | The stream-end timestamp may be missing. Tool execution time or time since interruption is never used as a substitute. |
 | Duplicate installation entry | Keep one entry, globally or per project, without changing other plugins. |
 
-## Development and validation
-
-```bash
-npm ci
-npm run check
-```
-
-`check` runs type checking, calculation and reactivity tests, the build, and a test of the package extracted into a temporary directory. The package test loads its exports using the host SDK, simulates a pill moving from generation to the final result, and verifies cleanup. OpenCode and Solid modules are supplied by the host and are not bundled into the GUI artifact.
-
-Installer tests also verify fresh activation, repeated activation/removal, exact backups, JSONC comment preservation, symlinked configuration, and rejection of invalid or ambiguous files. Tests cover duplicate snapshots, server and session isolation, invalid durations, tools, interruption, reconnection, labels, and timer cleanup. These simulations are not a test inside macOS Desktop.
-
-### Manual acceptance checklist for macOS 2.2.1 (pending)
-
-For each of **OpenCode Zen/Go**, **OpenRouter**, and a **custom local endpoint**, using existing connections:
-
-- [ ] Install using the quick installer or activate from the compiled directory; verify GUI loading.
-- [ ] Generate a response with reasoning if supported; check the live estimate and detail menu.
-- [ ] Check final counters, or the explicit retention of `≈` when the endpoint does not provide them.
-- [ ] Run a slow tool; verify that its execution time does not reduce the frozen average.
-- [ ] Interrupt a response, switch tabs, and disconnect/reconnect.
-- [ ] Quit and restart Desktop; check the reconstructed result and light/dark themes.
-- [ ] Repeat activation without adding a duplicate; check other plugins’ configuration.
-- [ ] Uninstall and reinstall; verify that other settings remain intact.
-
-The build and tests can run in a Linux cloud environment. The checklist above requires the Mac and configured providers; automated tests alone do not establish that it has been completed.
-
 ## References and limitations
 
 - [GUI API 2.2.1: ComposerPill](https://github.com/anomalyco/opencode/blob/v2.2.1/packages/plugin/src/gui/registries.ts)
