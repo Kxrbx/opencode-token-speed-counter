@@ -8,6 +8,8 @@ A live tokens-per-second counter for **OpenCode Desktop 2.2.1 and later**, targe
 
 The interface follows OpenCode’s language and native components, with English and French localization and support for light and dark themes. The extension makes no additional model requests, requires no additional API keys, and adds no history or telemetry. It reads data already synchronized by Desktop.
 
+![Screenshot of the token speed counter pill in OpenCode Desktop](assets/screenshot.png)
+
 ## Quick installation on macOS
 
 Requires **OpenCode Desktop 2.2.1 or later**, **Node.js 24+**, npm, and Git. Quit Desktop, then paste this command into Terminal:
