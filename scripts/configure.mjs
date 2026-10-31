@@ -15,7 +15,10 @@ function matches(entry, extension, directory) {
     candidate = path.resolve(directory, entry)
   } else return false
   try { candidate = realpathSync(candidate) } catch { /* Keep the normalized path if it no longer exists. */ }
-  return candidate === extension
+  // NTFS is case-insensitive, but Node realpath keeps the typed casing, so compare without case there.
+  return process.platform === "win32"
+    ? candidate.toLowerCase() === extension.toLowerCase()
+    : candidate === extension
 }
 
 /** Edit only the extension entry, retaining JSONC comments and unrelated settings. */
