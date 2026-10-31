@@ -1,6 +1,6 @@
 # Token Speed Counter for OpenCode Desktop
 
-A live tokens-per-second counter for **OpenCode Desktop 2.2.1 and later**, targeting **macOS**. A pill above the composer shows the speed of the latest model request:
+A live tokens-per-second counter for **OpenCode Desktop 2.2.1 and later**, targeting **macOS and Windows**. A pill above the composer shows the speed of the latest model request:
 
 - During generation: `≈ 42.3 tok/s · Generating`.
 - After completion: `38.7 tok/s · done`.
@@ -31,6 +31,28 @@ npm run install:local
 To inspect the installer before running it, open [`install.sh`](install.sh) and [`scripts/configure.mjs`](scripts/configure.mjs). For help from an existing checkout, run `bash install.sh --help`.
 
 Custom locations are supported through `TOKEN_SPEED_INSTALL_DIR`, `XDG_DATA_HOME`, and `XDG_CONFIG_HOME`. The installer stops instead of overwriting an unrelated directory or a checkout with local changes. If both `opencode.json` and `opencode.jsonc` exist, or `OPENCODE_CONFIG`, `OPENCODE_CONFIG_DIR`, or `OPENCODE_CONFIG_CONTENT` is used, use the manual method below to select the intended configuration. Only the global configuration is changed; remove any existing project-level declaration of this extension to avoid duplicates across configuration files.
+
+## Quick installation on Windows
+
+Requires the same prerequisites as on macOS. Quit Desktop, then paste this into PowerShell:
+
+```powershell
+irm https://raw.githubusercontent.com/Kxrbx/opencode-token-speed-counter/main/install.ps1 -OutFile "$env:TEMP\install-tsc.ps1"; powershell -NoProfile -ExecutionPolicy Bypass -File "$env:TEMP\install-tsc.ps1"
+```
+
+The installer downloads the extension to `%LOCALAPPDATA%\opencode-token-speed-counter`, installs dependencies, builds it, and adds its absolute directory path to the global OpenCode `plugins` array in `%USERPROFILE%\.config\opencode\opencode.jsonc` (or an existing `opencode.json`). **Restart Desktop** and open a main conversation to see the pill.
+
+The installer makes this configuration change explicitly. It preserves JSONC comments, other plugins and settings, and creates a timestamped backup before changing an existing file. Running it again updates the checkout and does not add another entry. No administrator rights are needed and no system prerequisites are installed automatically.
+
+If the repository was already cloned and built, run this from its directory:
+
+```powershell
+npm run install:local
+```
+
+To inspect the installer before running it, open [`install.ps1`](install.ps1) and [`scripts/configure.mjs`](scripts/configure.mjs). For help from an existing checkout, run `powershell -NoProfile -ExecutionPolicy Bypass -File install.ps1 --help`.
+
+Custom locations are supported through `TOKEN_SPEED_INSTALL_DIR`, `XDG_DATA_HOME`, and `XDG_CONFIG_HOME`. The installer stops instead of overwriting an unrelated directory or a checkout with local changes. If both `opencode.json` and `opencode.jsonc` exist, or `OPENCODE_CONFIG`, `OPENCODE_CONFIG_DIR`, or `OPENCODE_CONFIG_CONTENT` is used, use the manual method below to select the intended configuration. Only the global configuration is changed; the managed system configuration in `%ProgramData%\opencode` is never touched. Remove any existing project-level declaration of this extension to avoid duplicates across configuration files.
 
 ## Manual installation on macOS
 
@@ -79,7 +101,7 @@ Do not use a cloud workspace path such as `/workspace/...` on a Mac.
 
 Quit OpenCode Desktop completely (`⌘Q`). In the OpenCode user configuration, add the absolute path to the **package directory**, rather than a JavaScript file, to the `plugins` array.
 
-The standard location is `~/.config/opencode/opencode.jsonc` (or an existing `opencode.json`). If `XDG_CONFIG_HOME` was customized, use its `opencode` subdirectory. Edit the existing file rather than creating a second, competing configuration.
+The standard location is `~/.config/opencode/opencode.jsonc` (or an existing `opencode.json`). If `XDG_CONFIG_HOME` was customized, use its `opencode` subdirectory. On Windows, the standard location is `%USERPROFILE%\.config\opencode\opencode.jsonc` (or an existing `opencode.json`). Edit the existing file rather than creating a second, competing configuration.
 
 Back up the existing file before editing it. For example, only if this file is used:
 
@@ -138,6 +160,8 @@ If the quick installer was used, quit Desktop and remove its configuration entry
 cd "$HOME/.local/share/opencode-token-speed-counter"
 npm run uninstall:local
 ```
+
+On Windows, open PowerShell in `%LOCALAPPDATA%\opencode-token-speed-counter` and run `npm run uninstall:local`.
 
 Use a chosen directory instead if the installation path was customized. This command backs up the existing configuration and removes only entries matching this extension directory. It preserves other settings and can be repeated safely. Restart Desktop afterward. The directory may then be deleted if desired.
 
